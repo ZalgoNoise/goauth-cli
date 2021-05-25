@@ -1,0 +1,48 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "goauth-cli_lib",
+    srcs = ["goauth.go"],
+    importpath = "github.com/ZalgoNoise/goauth-cli",
+    visibility = ["//visibility:private"],
+    deps = ["//conf"],
+)
+
+go_binary(
+    name = "goauth",
+    embed = [":goauth-cli_lib"],
+    visibility = ["//visibility:public"],
+)
+
+
+platform(
+    name = "x64",
+    constraint_values = [
+        "@platforms//os:linux",
+        "@platforms//cpu:x86_64",
+    ],
+)
+
+platform(
+    name = "x86",
+    constraint_values = [
+        "@platforms//os:linux",
+        "@platforms//cpu:x86",
+    ],
+)
+
+platform(
+    name = "arm64",
+    constraint_values = [
+        "@platforms//os:linux",
+        "@platforms//cpu:arm64",
+    ],
+)
+
+platform(
+    name = "arm",
+    constraint_values = [
+        "@platforms//os:linux",
+        "@platforms//cpu:arm",
+    ],
+)

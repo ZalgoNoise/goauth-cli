@@ -1,0 +1,14 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "oauth",
+    srcs = [
+        "clientid.go",
+        "jwt.go",
+        "oauth.go",
+        "serviceaccount.go",
+        "sign.go",
+    ],
+    importpath = "github.com/ZalgoNoise/goauth-cli/oauth",
+    visibility = ["//visibility:public"],
+)
