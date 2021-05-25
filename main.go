@@ -1,6 +1,6 @@
 package main
 
-import "goauth/conf"
+import "github.com/ZalgoNoise/goauth-cli/conf"
 
 func main() {
 

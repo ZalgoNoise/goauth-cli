@@ -1,6 +1,6 @@
 package conf
 
-import "goauth/oauth"
+import "github.com/ZalgoNoise/goauth-cli/oauth"
 
 // GoAuth struct
 type GoAuth struct {
