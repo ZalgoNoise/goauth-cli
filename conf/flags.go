@@ -10,7 +10,8 @@ const (
 	noRefError = `No value provided for option: `
 )
 
-// GetOpts function
+// GetOpts function will collect the user's input from the set
+// flags on runtime, and create a GoAuthConf object based on it
 func GetOpts() *GoAuthConf {
 	cfg := &GoAuthConf{}
 
@@ -61,7 +62,9 @@ func GetOpts() *GoAuthConf {
 
 }
 
-// StringCheck function
+// StringCheck function will verify which of either short or long
+// form is defined, and return it. If none are set, an empty string
+// is returned
 func StringCheck(short, long, ref string) string {
 
 	if short != "" {

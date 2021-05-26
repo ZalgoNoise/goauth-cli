@@ -2,21 +2,23 @@ package conf
 
 import "github.com/ZalgoNoise/goauth-cli/oauth"
 
-// GoAuth struct
+// GoAuth struct represents an instance (execution) of GoAuth
 type GoAuth struct {
 	Conf           *GoAuthConf
 	ClientID       *oauth.ClientID
 	ServiceAccount *oauth.ServiceAccount
 }
 
-// NewGoAuth function
+// NewGoAuth function will create and return a new GoAuth object
+// based on the input configuration
 func NewGoAuth() *GoAuth {
 	return &GoAuth{
 		Conf: GetOpts(),
 	}
 }
 
-// OnStart method
+// OnStart method will list the actions to take upon setting up
+// a new GoAuth instance
 func (g *GoAuth) OnStart() {
 	if g.Conf.IsClientID != false {
 		g.ExecClientID()
@@ -26,7 +28,8 @@ func (g *GoAuth) OnStart() {
 
 }
 
-// OnFinish method
+// OnFinish method will list the actions to take upon completing
+// execution
 func (g *GoAuth) OnFinish() {
 
 	if g.Conf.IsClientID != false && g.ClientID.AccessToken.IsSet() {
@@ -47,7 +50,8 @@ func (g *GoAuth) OnFinish() {
 
 }
 
-// ExecClientID method
+// ExecClientID method will process the actions required for a
+// Client ID account type
 func (g *GoAuth) ExecClientID() {
 	var err error
 
@@ -69,7 +73,8 @@ func (g *GoAuth) ExecClientID() {
 	}
 }
 
-// ExecServiceAccount method
+// ExecServiceAccount method will process the actions required for a
+// Service Account account type
 func (g *GoAuth) ExecServiceAccount() {
 	g.ServiceAccount = oauth.NewServiceAccount(
 		g.Conf.Secret,
@@ -81,7 +86,8 @@ func (g *GoAuth) ExecServiceAccount() {
 
 }
 
-// GoAuthConf struct
+// GoAuthConf struct will represent the configuration for this
+// instance of GoAuth
 type GoAuthConf struct {
 	IsClientID       bool
 	IsServiceAccount bool
@@ -94,7 +100,8 @@ type GoAuthConf struct {
 	RefreshToken     string
 }
 
-// NewClientID method
+// NewClientID method will create a new Client ID object based
+// on its available input parameters
 func (c *GoAuthConf) NewClientID(clientid, secret, scopes, refreshToken string, ninjaMode bool) *GoAuthConf {
 	return &GoAuthConf{
 		IsClientID:       true,
@@ -107,7 +114,8 @@ func (c *GoAuthConf) NewClientID(clientid, secret, scopes, refreshToken string, 
 	}
 }
 
-// NewServiceAccount method
+// NewServiceAccount method will create a new Service Account
+// object based on its available input parameters
 func (c *GoAuthConf) NewServiceAccount(keyfile, scopes, subscriber string, ninjaMode bool) *GoAuthConf {
 	return &GoAuthConf{
 		IsClientID:       false,

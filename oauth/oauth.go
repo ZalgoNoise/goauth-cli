@@ -5,13 +5,15 @@ import (
 	"strconv"
 )
 
-// TokenError struct
+// TokenError represents a JSON response containing an error
+// when requesting an Access Token
 type TokenError struct {
 	Error       string `json:"error"`
 	Description string `json:"error_description"`
 }
 
-// AccessToken struct
+// AccessToken struct represents a JSON response containing an
+// Access Token, for either Client IDs or Service Accounts
 type AccessToken struct {
 	Token        string `json:"access_token,omitempty"`
 	Expiry       int    `json:"expires_in,omitempty"`
@@ -20,11 +22,8 @@ type AccessToken struct {
 	TokenType    string `json:"token_type,omitempty"`
 }
 
-// type Authenticator interface {
-// 	SetToken(body []byte)
-// }
-
-// IsSet method
+// IsSet method will check whether the Access Token value is
+// set or not, returning a boolean (true / false) accordingly
 func (a *AccessToken) IsSet() bool {
 	if a.Token != "" {
 		return true
@@ -33,7 +32,8 @@ func (a *AccessToken) IsSet() bool {
 	return false
 }
 
-// PrintLong method
+// PrintLong method will output a more verbose message when the
+// Access Token is about to be returned to the user
 func (a *AccessToken) PrintLong() {
 	if a.RefreshToken != "" {
 		fmt.Println(`====
@@ -51,7 +51,9 @@ Expiry: ` + strconv.Itoa(a.Expiry) + `
 	return
 }
 
-// PrintShort method
+// PrintShort method will output strictly the Access Token,
+// without line feeds. This might be especially useful when feeding
+// the value into another program or app (like a cURL HTTP request)
 func (a *AccessToken) PrintShort() {
 	fmt.Print(a.Token)
 }

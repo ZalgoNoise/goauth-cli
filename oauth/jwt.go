@@ -35,14 +35,14 @@ type JWTClaim struct {
 	Issued     int64  `json:"iat,omitempty"`
 }
 
-// SetExpiry method
+// SetExpiry method defines the Token's issuing and expiry time
 func (c *JWTClaim) SetExpiry() {
 	c.Issued = time.Now().Unix()
 	c.Expiry = (c.Issued + 3590)
 	return
 }
 
-// Sign method
+// Sign method will create a signature for the JWT
 func (j *JWT) Sign(pkey string) ([]byte, error) {
 
 	headerB64, err := b64(j.Header)
@@ -72,7 +72,8 @@ func (j *JWT) Sign(pkey string) ([]byte, error) {
 
 }
 
-// Build method
+// Build method creates a JWT header and claim, signs it, and
+// returns a JWT payload for the request
 func (j *JWT) Build() ([]byte, error) {
 	headerB64, err := b64(j.Header)
 	if err != nil {
@@ -123,37 +124,37 @@ func byteJoin(input ...[]byte) []byte {
 	return array
 }
 
-// InitHeader method
+// InitHeader method defines the JWT's header value
 func (j *JWT) InitHeader() {
 	j.Header = jwtHeader
 	return
 }
 
-// SetIssuer method
+// SetIssuer method defines the JWTClaim's issuer value
 func (c *JWTClaim) SetIssuer(input string) {
 	c.Issuer = input
 	return
 }
 
-// SetSubscriber method
+// SetSubscriber method defines the JWTClaim's subscriber value
 func (c *JWTClaim) SetSubscriber(input string) {
 	c.Subscriber = input
 	return
 }
 
-// SetScope method
+// SetScope method defines the JWTClaim's header value
 func (c *JWTClaim) SetScope(input string) {
 	c.Scope = input
 	return
 }
 
-// SetAudience method
+// SetAudience method defines the JWTClaim's audience value
 func (c *JWTClaim) SetAudience(input string) {
 	c.Audience = input
 	return
 }
 
-// GetOutput method
+// GetOutput method returns the complete JWT string
 func (j *JWT) GetOutput() string {
 	return string(j.Output)
 }

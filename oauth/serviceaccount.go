@@ -25,7 +25,8 @@ type ServiceAccount struct {
 	AccessToken     *AccessToken
 }
 
-// NewServiceAccount function
+// NewServiceAccount function creates a new ServiceAccount object
+// based on the input parameters
 func NewServiceAccount(file, scope, sub string) *ServiceAccount {
 	svAcc := &ServiceAccount{}
 
@@ -42,7 +43,8 @@ func NewServiceAccount(file, scope, sub string) *ServiceAccount {
 	return svAcc
 }
 
-// Init method
+// Init method will initiate a ServiceAccount object by
+// creating (and signing) the JWT for the request
 func (s *ServiceAccount) Init(scope, sub string) {
 	s.JWT = &JWT{
 		Claim: &JWTClaim{},
@@ -71,7 +73,8 @@ func (s *ServiceAccount) Init(scope, sub string) {
 
 }
 
-// Auth method
+// Auth method will issue a request for an Access Token, based
+// on the created JWT
 func (s *ServiceAccount) Auth() {
 	post, err := json.Marshal(map[string]string{
 		"grant_type": `urn:ietf:params:oauth:grant-type:jwt-bearer`,
@@ -103,7 +106,8 @@ func (s *ServiceAccount) Auth() {
 	return
 }
 
-// SetToken method
+// SetToken method will define the AccessToken object in the
+// calling ServiceAccount
 func (s *ServiceAccount) SetToken(body []byte) {
 	if err := json.Unmarshal(body, s.AccessToken); err != nil {
 		panic(errors.New(`Unable to complete the request:
@@ -114,27 +118,32 @@ func (s *ServiceAccount) SetToken(body []byte) {
 	}
 }
 
-// GetPrivateKey method
+// GetPrivateKey method returns the ServiceAccount's defined
+// Private Key
 func (s *ServiceAccount) GetPrivateKey() string {
 	return s.PrivateKey
 }
 
-// GetEmail method
+// GetEmail method returns the ServiceAccount's defined
+// service account email
 func (s *ServiceAccount) GetEmail() string {
 	return s.ClientEmail
 }
 
-// GetClientID method
+// GetClientID method returns the ServiceAccount's associated
+// ClientID (Workspace Domain-wide Delegation)
 func (s *ServiceAccount) GetClientID() string {
 	return s.ClientID
 }
 
-// GetTokenURI method
+// GetTokenURI method returns the ServiceAccount's defined
+// token URI
 func (s *ServiceAccount) GetTokenURI() string {
 	return s.TokenURI
 }
 
-// CheckResponse function
+// CheckResponse function will look into the returned HTTP response
+// to check whether it actually contains an error
 func CheckResponse(body []byte) {
 	chk := &TokenError{}
 
