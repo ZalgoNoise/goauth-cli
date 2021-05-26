@@ -49,12 +49,18 @@ func (g *GoAuth) OnFinish() {
 
 // ExecClientID method
 func (g *GoAuth) ExecClientID() {
-	g.ClientID = oauth.NewClientID(
+	var err error
+
+	g.ClientID, err = oauth.NewClientID(
 		g.Conf.AccountName,
 		g.Conf.Secret,
 		g.Conf.Scopes,
 		g.Conf.RefreshToken,
 	)
+	
+	if err != nil {
+		panic(err)
+	}
 
 	if g.ClientID.RefreshToken.HasToken() {
 		g.ClientID.Refresh()

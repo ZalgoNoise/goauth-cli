@@ -5,6 +5,7 @@ import (
 	"strconv"
 )
 
+// TokenError struct
 type TokenError struct {
 	Error       string `json:"error"`
 	Description string `json:"error_description"`
@@ -23,6 +24,7 @@ type AccessToken struct {
 // 	SetToken(body []byte)
 // }
 
+// IsSet method
 func (a *AccessToken) IsSet() bool {
 	if a.Token != "" {
 		return true
@@ -31,6 +33,7 @@ func (a *AccessToken) IsSet() bool {
 	return false
 }
 
+// PrintLong method
 func (a *AccessToken) PrintLong() {
 	if a.RefreshToken != "" {
 		fmt.Println(`====
@@ -48,6 +51,7 @@ Expiry: ` + strconv.Itoa(a.Expiry) + `
 	return
 }
 
+// PrintShort method
 func (a *AccessToken) PrintShort() {
 	fmt.Print(a.Token)
 }

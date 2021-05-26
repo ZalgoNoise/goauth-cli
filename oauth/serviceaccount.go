@@ -103,6 +103,7 @@ func (s *ServiceAccount) Auth() {
 	return
 }
 
+// SetToken method
 func (s *ServiceAccount) SetToken(body []byte) {
 	if err := json.Unmarshal(body, s.AccessToken); err != nil {
 		panic(errors.New(`Unable to complete the request:
@@ -133,6 +134,7 @@ func (s *ServiceAccount) GetTokenURI() string {
 	return s.TokenURI
 }
 
+// CheckResponse function
 func CheckResponse(body []byte) {
 	chk := &TokenError{}
 

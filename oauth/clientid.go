@@ -4,12 +4,15 @@ import (
 	"bufio"
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
 	"strings"
+
+	"github.com/ZalgoNoise/goauth-cli/oauth"
 )
 
 // ClientID struct
@@ -19,7 +22,7 @@ type ClientID struct {
 	Secret       string
 	Scopes       string
 	RefreshToken *RefreshToken
-	AccessToken  *AccessToken
+	AccessToken  *oauth.AccessToken
 }
 
 // RefreshToken struct
@@ -31,10 +34,21 @@ type RefreshToken struct {
 }
 
 // NewClientID function
-func NewClientID(id, secret, scopes, refreshToken string) *ClientID {
+func NewClientID(id, secret, scopes, refreshToken string) (*ClientID, error) {
 	client := &ClientID{
 		Type: "client_id",
 	}
+
+	if id == "" {
+		return nil, errors.New(`Client ID not defined - mandatory field`)
+	}
+	if secret == "" {
+		return nil, errors.New(`Client Secret not defined - mandatory field`)
+	}
+	if scopes == "" && refreshToken == "" {
+		return nil, errors.New(`Scopes not defined - mandatory field when Refresh Token is absent`)
+	}
+
 	client.SetID(id)
 	client.SetSecret(secret)
 	client.SetScopes(scopes)
@@ -42,10 +56,10 @@ func NewClientID(id, secret, scopes, refreshToken string) *ClientID {
 
 	if refreshToken != "" {
 		client.RefreshToken.SetToken(refreshToken)
-		return client
+		return client, nil
 	}
 
-	return client
+	return client, nil
 }
 
 // Gen method
@@ -95,6 +109,7 @@ Access Code:	`)
 	return
 }
 
+// SetToken method
 func (c *ClientID) SetToken(body []byte) {
 	if err := json.Unmarshal(body, c.AccessToken); err != nil {
 		panic(err)
@@ -161,7 +176,7 @@ func (c *ClientID) SetScopes(input string) {
 // InitToken method
 func (c *ClientID) InitToken() {
 	c.RefreshToken = &RefreshToken{}
-	c.AccessToken = &AccessToken{}
+	c.AccessToken = &oauth.AccessToken{}
 	c.RefreshToken.SetTokenURL()
 	return
 }
