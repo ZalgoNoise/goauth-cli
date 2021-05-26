@@ -12,7 +12,6 @@ import (
 	"os"
 	"strings"
 
-	"github.com/ZalgoNoise/goauth-cli/oauth"
 )
 
 // ClientID struct
@@ -22,7 +21,7 @@ type ClientID struct {
 	Secret       string
 	Scopes       string
 	RefreshToken *RefreshToken
-	AccessToken  *oauth.AccessToken
+	AccessToken  *AccessToken
 }
 
 // RefreshToken struct
@@ -176,7 +175,7 @@ func (c *ClientID) SetScopes(input string) {
 // InitToken method
 func (c *ClientID) InitToken() {
 	c.RefreshToken = &RefreshToken{}
-	c.AccessToken = &oauth.AccessToken{}
+	c.AccessToken = &AccessToken{}
 	c.RefreshToken.SetTokenURL()
 	return
 }

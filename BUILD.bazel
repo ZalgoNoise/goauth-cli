@@ -14,7 +14,6 @@ go_binary(
     visibility = ["//visibility:public"],
 )
 
-
 platform(
     name = "x64",
     constraint_values = [
